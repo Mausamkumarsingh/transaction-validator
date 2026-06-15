@@ -1,0 +1,6 @@
+order_id,phone,country,date,payment_mode,amount,phone_valid
+1,9876543210,India,2026-06-15,Credit Card,1000,True
+2,12345,India,2026-06-15,UPI,500,False
+3,91234567,Singapore,2026-06-15,Cash,700,False
+4,987654321,India,15/06/2026,Credit Card,1200,False
+5,87654321,Singapore,2026-06-15,Debit Card,900,False

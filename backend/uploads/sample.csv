@@ -1,0 +1,6 @@
+order_id,product_name,phone,country,date,payment_mode,amount
+1,Laptop,9876543210,India,2026-06-15,Credit Card,1000
+2,Phone,12345,India,2026-06-15,UPI,500
+3,Headphones,91234567,Singapore,2026-06-15,Cash,700
+4,TV,987654321,India,15/06/2026,Credit Card,1200
+5,Smart Watch,87654321,Singapore,2026-06-15,Debit Card,900
