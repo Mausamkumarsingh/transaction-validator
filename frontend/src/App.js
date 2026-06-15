@@ -20,7 +20,7 @@ function App() {
       setProgress(0);
 
       const res = await axios.post(
-        "http://127.0.0.1:5000/upload",
+        "https://transaction-validator-backend.onrender.com/upload",
         formData,
         {
           onUploadProgress: (progressEvent) => {
