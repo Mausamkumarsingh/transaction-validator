@@ -148,8 +148,7 @@ function App() {
             <strong>❌ Invalid Rows:</strong>{" "}
             {summary.invalid}
           </p>
-
-          <a
+<a
   href="https://transaction-validator-backend.onrender.com/download"
   target="_blank"
   rel="noreferrer"
