@@ -7,6 +7,9 @@ function App() {
   const [summary, setSummary] = useState(null);
   const [progress, setProgress] = useState(0);
 
+  const BACKEND_URL =
+    "https://transaction-validator-backend.onrender.com";
+
   const uploadFile = async () => {
     if (!file) {
       alert("Please select a CSV file.");
@@ -20,14 +23,19 @@ function App() {
       setProgress(0);
 
       const res = await axios.post(
-        "https://transaction-validator-backend.onrender.com/upload",
+        `${BACKEND_URL}/upload`,
         formData,
         {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+
           onUploadProgress: (progressEvent) => {
             const percent = Math.round(
               (progressEvent.loaded * 100) /
-              progressEvent.total
+                progressEvent.total
             );
+
             setProgress(percent);
           },
         }
@@ -40,11 +48,17 @@ function App() {
         valid: res.data.valid_rows,
         invalid: res.data.invalid_rows,
       });
-
     } catch (err) {
       console.log(err);
       setMessage("Upload failed.");
     }
+  };
+
+  const downloadFile = () => {
+    window.open(
+      `${BACKEND_URL}/download`,
+      "_blank"
+    );
   };
 
   return (
@@ -59,10 +73,11 @@ function App() {
         textAlign: "center",
       }}
     >
-      <h1> Transaction Validator</h1>
+      <h1>Transaction Validator</h1>
 
       <p>
-        Upload transaction CSV files for validation and processing.
+        Upload transaction CSV files for validation
+        and processing.
       </p>
 
       <input
@@ -73,7 +88,8 @@ function App() {
         }
       />
 
-      <br /><br />
+      <br />
+      <br />
 
       <button
         onClick={uploadFile}
@@ -89,11 +105,14 @@ function App() {
         Upload CSV
       </button>
 
-      <br /><br />
+      <br />
+      <br />
 
       {progress > 0 && (
         <div>
-          <p>Upload Progress: {progress}%</p>
+          <p>
+            Upload Progress: {progress}%
+          </p>
 
           <div
             style={{
@@ -139,33 +158,38 @@ function App() {
             {summary.rows}
           </p>
 
-          <p style={{ color: "green" }}>
-            <strong>✅ Valid Rows:</strong>{" "}
-            {summary.valid}
+          <p
+            style={{
+              color: "green",
+              fontWeight: "bold",
+            }}
+          >
+            ✅ Valid Rows: {summary.valid}
           </p>
 
-          <p style={{ color: "red" }}>
-            <strong>❌ Invalid Rows:</strong>{" "}
-            {summary.invalid}
+          <p
+            style={{
+              color: "red",
+              fontWeight: "bold",
+            }}
+          >
+            ❌ Invalid Rows: {summary.invalid}
           </p>
-<button
-  onClick={() =>
-    window.open(
-      "https://transaction-validator-backend.onrender.com/download",
-      "_blank"
-    )
-  }
-  style={{
-    padding: "10px",
-    backgroundColor: "#28a745",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  }}
->
-  ⬇️ Download Validated CSV
-</button>
+
+          <button
+            onClick={downloadFile}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            ⬇ Download Validated CSV
+          </button>
         </div>
       )}
     </div>
