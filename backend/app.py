@@ -24,6 +24,7 @@ valid_payment_modes = [
     "Net Banking"
 ]
 
+# Phone Validation
 def validate_phone(phone, country):
     phone = str(phone).strip()
 
@@ -32,29 +33,53 @@ def validate_phone(phone, country):
 
     return phone.isdigit() and len(phone) == country_rules[country]
 
+# Date Validation
 def validate_date(date_string):
     try:
-        datetime.strptime(str(date_string), "%Y-%m-%d")
+        datetime.strptime(
+            str(date_string),
+            "%Y-%m-%d"
+        )
         return True
     except:
         return False
 
+# Time Validation
+def validate_time(time_string):
+    try:
+        datetime.strptime(
+            str(time_string),
+            "%H:%M:%S"
+        )
+        return True
+    except:
+        return False
+
+# Payment Validation
 def validate_payment(mode):
     return mode in valid_payment_modes
+
 
 @app.route("/")
 def home():
     return "Transaction Validator Backend Running"
 
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
 
     if "file" not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
+        return jsonify({
+            "error": "No file uploaded"
+        }), 400
 
     file = request.files["file"]
 
-    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+    filepath = os.path.join(
+        UPLOAD_FOLDER,
+        file.filename
+    )
+
     file.save(filepath)
 
     df = pd.read_csv(filepath)
@@ -65,6 +90,7 @@ def upload_file():
         "phone",
         "country",
         "date",
+        "time",
         "payment_mode",
         "amount"
     ]
@@ -81,34 +107,42 @@ def upload_file():
 
         valid = True
 
-        # Phone validation
+        # Phone Validation
         if not validate_phone(
             row["phone"],
             row["country"]
         ):
             valid = False
 
-        # Date validation
+        # Date Validation
         if not validate_date(
             row["date"]
         ):
             valid = False
 
-        # Payment validation
+        # Time Validation
+        if not validate_time(
+            row["time"]
+        ):
+            valid = False
+
+        # Payment Validation
         if not validate_payment(
             row["payment_mode"]
         ):
             valid = False
 
-        # Amount validation
+        # Amount Validation
         try:
             if float(row["amount"]) < 0:
                 valid = False
         except:
             valid = False
 
-        # Product name validation
-        if pd.isna(row["product_name"]):
+        # Product Validation
+        if pd.isna(
+            row["product_name"]
+        ):
             valid = False
 
         validation_results.append(
@@ -127,7 +161,7 @@ def upload_file():
         index=False
     )
 
-    # Split large CSV files
+    # CSV Chunking
     chunk_size = 1000
 
     for i in range(
@@ -135,14 +169,15 @@ def upload_file():
         len(df),
         chunk_size
     ):
+
         chunk = df.iloc[
-            i:i+chunk_size
+            i:i + chunk_size
         ]
 
         chunk.to_csv(
             os.path.join(
                 UPLOAD_FOLDER,
-                f"chunk_{i//chunk_size+1}.csv"
+                f"chunk_{i//chunk_size + 1}.csv"
             ),
             index=False
         )
@@ -158,17 +193,27 @@ def upload_file():
         )
     })
 
+
 @app.route("/download")
 def download():
+
     file_path = os.path.join(
         UPLOAD_FOLDER,
         "validated_output.csv"
     )
 
+    if not os.path.exists(file_path):
+        return jsonify({
+            "error":
+            "No validated file available. Upload a CSV first."
+        }), 404
+
     return send_file(
         file_path,
-        as_attachment=True
+        as_attachment=True,
+        download_name="validated_output.csv"
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
