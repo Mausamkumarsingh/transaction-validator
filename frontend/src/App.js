@@ -148,13 +148,24 @@ function App() {
             <strong>❌ Invalid Rows:</strong>{" "}
             {summary.invalid}
           </p>
-<a
-  href="https://transaction-validator-backend.onrender.com/download"
-  target="_blank"
-  rel="noreferrer"
+<button
+  onClick={() =>
+    window.open(
+      "https://transaction-validator-backend.onrender.com/download",
+      "_blank"
+    )
+  }
+  style={{
+    padding: "10px",
+    backgroundColor: "#28a745",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  }}
 >
   ⬇️ Download Validated CSV
-</a>
+</button>
         </div>
       )}
     </div>
