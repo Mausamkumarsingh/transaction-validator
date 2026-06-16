@@ -64,21 +64,35 @@ function App() {
   return (
     <div
       style={{
-        maxWidth: "700px",
+        maxWidth: "850px",
         margin: "50px auto",
-        padding: "30px",
-        borderRadius: "15px",
-        boxShadow: "0 0 15px rgba(0,0,0,0.2)",
-        backgroundColor: "#fff",
+        padding: "40px",
+        borderRadius: "20px",
+        boxShadow: "0 0 20px rgba(0,0,0,0.15)",
+        backgroundColor: "#ffffff",
         textAlign: "center",
       }}
     >
-      <h1>Transaction Validator</h1>
+      <h1
+        style={{
+          fontSize: "48px",
+          marginBottom: "10px",
+        }}
+      >
+        Transaction Validator
+      </h1>
 
-      <p>
+      <p
+        style={{
+          fontSize: "18px",
+          color: "#555",
+        }}
+      >
         Upload transaction CSV files for validation
         and processing.
       </p>
+
+      <br />
 
       <input
         type="file"
@@ -94,11 +108,12 @@ function App() {
       <button
         onClick={uploadFile}
         style={{
-          padding: "10px 20px",
+          padding: "12px 25px",
           backgroundColor: "#007bff",
           color: "white",
           border: "none",
-          borderRadius: "5px",
+          borderRadius: "8px",
+          fontSize: "16px",
           cursor: "pointer",
         }}
       >
@@ -110,7 +125,12 @@ function App() {
 
       {progress > 0 && (
         <div>
-          <p>
+          <p
+            style={{
+              fontSize: "18px",
+              fontWeight: "bold",
+            }}
+          >
             Upload Progress: {progress}%
           </p>
 
@@ -126,8 +146,9 @@ function App() {
                 width: `${progress}%`,
                 backgroundColor: "#28a745",
                 color: "white",
-                padding: "5px",
+                padding: "8px",
                 borderRadius: "10px",
+                fontWeight: "bold",
               }}
             >
               {progress}%
@@ -139,28 +160,37 @@ function App() {
       <br />
 
       {message && (
-        <h3 style={{ color: "green" }}>
+        <h2
+          style={{
+            color: "green",
+          }}
+        >
           {message}
-        </h3>
+        </h2>
       )}
 
       {summary && (
         <div
           style={{
-            marginTop: "20px",
+            marginTop: "30px",
             textAlign: "left",
           }}
         >
           <h2>📊 Validation Summary</h2>
 
-          <p>
-            <strong>Total Rows:</strong>{" "}
-            {summary.rows}
+          <p
+            style={{
+              fontSize: "20px",
+              fontWeight: "bold",
+            }}
+          >
+            Total Rows: {summary.rows}
           </p>
 
           <p
             style={{
               color: "green",
+              fontSize: "20px",
               fontWeight: "bold",
             }}
           >
@@ -170,26 +200,37 @@ function App() {
           <p
             style={{
               color: "red",
+              fontSize: "20px",
               fontWeight: "bold",
             }}
           >
             ❌ Invalid Rows: {summary.invalid}
           </p>
 
-          <button
-            onClick={downloadFile}
+          <div
             style={{
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginTop: "10px",
+              textAlign: "center",
+              marginTop: "25px",
             }}
           >
-            ⬇ Download Validated CSV
-          </button>
+            <button
+              onClick={downloadFile}
+              style={{
+                backgroundColor: "#28a745",
+                color: "white",
+                padding: "14px 28px",
+                border: "none",
+                borderRadius: "10px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                boxShadow:
+                  "0 4px 10px rgba(0,0,0,0.15)",
+              }}
+            >
+              ⬇️ Download Validated CSV
+            </button>
+          </div>
         </div>
       )}
     </div>
